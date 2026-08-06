@@ -79,46 +79,36 @@ One thing I found genuinely interesting while working through this: TOPSIS doesn
 
 ## Mathematical Formulation of the Rating System
 
-**Step 1 — Decision Matrix**
+**Step 1 — Decision Matrix:** x_ij = raw value of criterion i for player j
 
-Let $x_{ij}$ represent the raw value of criterion $i$ for player $j$, where $i = 1, \dots, n$ (the number of criteria) and $j = 1, \dots, m$ (the number of players).
+**Step 2 — Normalization** (rescale every stat to a 0–1 range):
 
-**Step 2 — Normalization**
+    Profit criteria (higher is better):
+    v_ij = (x_ij - min(x_i)) / (max(x_i) - min(x_i))
 
-Each criterion is normalized to a range between 0 and 1. For **profit** criteria (higher is better):
+    Cost criteria (lower is better, e.g. red cards):
+    v_ij = (max(x_i) - x_ij) / (max(x_i) - min(x_i))
 
-$$v_{ij} = \frac{x_{ij} - \min(x_i)}{\max(x_i) - \min(x_i)}$$
+**Step 3 — Weighting** (equal weight per criterion):
 
-For **cost** criteria (lower is better, e.g. red cards):
+    w_i = 1 / n
+    u_ij = w_i * v_ij
 
-$$v_{ij} = \frac{\max(x_i) - x_{ij}}{\max(x_i) - \min(x_i)}$$
+**Step 4 — Ideal and Worst-Case Reference Points:**
 
-**Step 3 — Weighting**
+    u_i* = max(u_ij) across all players     [the "ideal" player]
+    u_i- = min(u_ij) across all players     [the "worst-case" player]
 
-Since criteria are weighted equally, each weight is:
+**Step 5 — Euclidean Distance:**
 
-$$w_i = \frac{1}{n}$$
+    D_j* = sqrt( sum( (u_ij - u_i*)^2 ) )   [distance to ideal]
+    D_j- = sqrt( sum( (u_ij - u_i-)^2 ) )   [distance to worst-case]
 
-giving the weighted normalized value:
+**Step 6 — Final Rating:**
 
-$$u_{ij} = w_i \cdot v_{ij}$$
+    C_j = D_j- / (D_j* + D_j-)
 
-**Step 4 — Ideal and Worst-Case Solutions**
-
-$$u_i^{*} = \max_j(u_{ij}), \qquad u_i^{-} = \min_j(u_{ij})$$
-
-**Step 5 — Euclidean Distance to Ideal and Worst-Case**
-
-$$D_j^{*} = \sqrt{\sum_{i=1}^{n} \left(u_{ij} - u_i^{*}\right)^2}$$
-
-$$D_j^{-} = \sqrt{\sum_{i=1}^{n} \left(u_{ij} - u_i^{-}\right)^2}$$
-
-**Step 6 — Relative Closeness (Final Rating)**
-
-$$C_j^{*} = \frac{D_j^{-}}{D_j^{*} + D_j^{-}}$$
-
-The final rating is $C_j^{*} \times 100$, bounded between 0 and 100.
-
+Final rating shown = C_j × 100, bounded between 0 and 100.
 
 
 
