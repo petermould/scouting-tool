@@ -52,8 +52,6 @@ To get real analysis on these positions, I had to first understand understand ho
 Rather than relying solely on FBref's broad tags, K-means clustering was used to discover genuine sub-roles within each position group. Given real playing statistics (goals, assists, crossing volume, tackles, creative output), the algorithm groups players based purely on how similar their actual numbers are, without being told in advance what the groups should represent.
 
 
-<img width="319" height="229" alt="Screenshot 2026-08-07 at 00 46 39" src="https://github.com/user-attachments/assets/744cd7bf-d2d3-4c33-a768-bfa076d25684" />
-
 
 ## Player Rating System 
 
@@ -79,36 +77,45 @@ One thing I found genuinely interesting while working through this: TOPSIS doesn
 
 ## Mathematical Formulation of the Rating System
 
-**Step 1 — Decision Matrix:** x_ij = raw value of criterion i for player j
+**Step 1 — Decision Matrix**
 
-**Step 2 — Normalization** (rescale every stat to a 0–1 range):
+Let $x_{ij}$ represent the raw value of criterion $i$ for player $j$, where $i = 1, \dots, n$ (the number of criteria) and $j = 1, \dots, m$ (the number of players).
 
-    Profit criteria (higher is better):
-    v_ij = (x_ij - min(x_i)) / (max(x_i) - min(x_i))
+**Step 2 — Normalization**
 
-    Cost criteria (lower is better, e.g. red cards):
-    v_ij = (max(x_i) - x_ij) / (max(x_i) - min(x_i))
+Each criterion is normalized to a range between 0 and 1. For **profit** criteria (higher is better):
 
-**Step 3 — Weighting** (equal weight per criterion):
+$$v_{ij} = \frac{x_{ij} - \min(x_i)}{\max(x_i) - \min(x_i)}$$
 
-    w_i = 1 / n
-    u_ij = w_i * v_ij
+For **cost** criteria (lower is better, e.g. red cards):
 
-**Step 4 — Ideal and Worst-Case Reference Points:**
+$$v_{ij} = \frac{\max(x_i) - x_{ij}}{\max(x_i) - \min(x_i)}$$
 
-    u_i* = max(u_ij) across all players     [the "ideal" player]
-    u_i- = min(u_ij) across all players     [the "worst-case" player]
+**Step 3 — Weighting**
 
-**Step 5 — Euclidean Distance:**
+Since criteria are weighted equally, each weight is:
 
-    D_j* = sqrt( sum( (u_ij - u_i*)^2 ) )   [distance to ideal]
-    D_j- = sqrt( sum( (u_ij - u_i-)^2 ) )   [distance to worst-case]
+$$w_i = \frac{1}{n}$$
 
-**Step 6 — Final Rating:**
+giving the weighted normalized value:
 
-    C_j = D_j- / (D_j* + D_j-)
+$$u_{ij} = w_i \cdot v_{ij}$$
 
-Final rating shown = C_j × 100, bounded between 0 and 100.
+**Step 4 — Ideal and Worst-Case Solutions**
+
+$$u_i^* = \max_j(u_{ij}), \qquad u_i^- = \min_j(u_{ij})$$
+
+**Step 5 — Euclidean Distance to Ideal and Worst-Case**
+
+$$D_j^* = \sqrt{\sum_{i=1}^{n} \left(u_{ij} - u_i^*\right)^2}$$
+
+$$D_j^- = \sqrt{\sum_{i=1}^{n} \left(u_{ij} - u_i^-\right)^2}$$
+
+**Step 6 — Relative Closeness (Final Rating)**
+
+$$C_j^* = \frac{D_j^-}{D_j^* + D_j^-}$$
+
+The final rating is $C_j^* \times 100$, bounded between 0 and 100.
 
 
 
