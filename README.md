@@ -63,22 +63,21 @@ TOPSIS stands for **Technique for Order Preference by Similarity to Ideal Soluti
 
 Here's how it actually works, step by step:
 
-**1. Normalize every stat to a 0–1 scale.** For stats where higher is better (like goals per 90), the best real value becomes 1 and the worst becomes 0. For stats where lower is better (like red cards), it's flipped — the lowest value becomes 1.
+1. Normalize every stat to a 0–1 scale. For stats where higher is better (like goals per 90), the best real value becomes 1 and the worst becomes 0. For stats where lower is better (like red cards), it's flipped — the lowest value becomes 1.
 
-**2. Weight every stat equally.** I followed the same approach as the paper this is based on — rather than deciding myself that goals matter more than assists, every stat in a player's criteria list counts the same amount.
+2. Weight every stat equally. I followed the same approach as the paper this is based on — rather than deciding myself that goals matter more than assists, every stat in a player's criteria list counts the same amount.
 
-**3. Build the ideal and worst-case players.** Take the best normalized value of every stat and combine them into one "player" — this doesn't exist in real life, it's just a reference point built from real data.
+3. Build the ideal and worst-case players. Take the best normalized value of every stat and combine them into one "player" — this doesn't exist in real life, it's just a reference point built from real data.
 
-**4. Measure the distance.** For every real player, calculate how far they are from the ideal player and from the worst-case player, using Euclidean distance — the same maths you'd use to measure distance on a map, just done across many stats at once instead of two.
+4. Measure the distance. For every real player, calculate how far they are from the ideal player and from the worst-case player, using Euclidean distance — the same maths you'd use to measure distance on a map, just done across many stats at once instead of two.
 
-**5. Calculate the final score.** A player's rating is their distance from the worst-case player, divided by the total of both distances combined. This gets multiplied by 100 to give a score out of 100.
+5. Calculate the final score. A player's rating is their distance from the worst-case player, divided by the total of both distances combined. This gets multiplied by 100 to give a score out of 100.
 
 One thing I found genuinely interesting while working through this: TOPSIS doesn't just reward high totals — it rewards being *well-rounded*. Two players with the exact same combined output across their stats can end up with different ratings depending on how balanced they are across each individual stat. A player who's great at one thing and poor at another will actually score lower than someone who's decent across the board with the same overall total.
 
 
-## The Mathematics behind it all
 
-### Mathematical Formulation of the Rating System
+## Mathematical Formulation of the Rating System
 
 **Step 1 — Decision Matrix**
 
@@ -86,7 +85,7 @@ Let $x_{ij}$ represent the raw value of criterion $i$ for player $j$, where $i =
 
 **Step 2 — Normalization**
 
-Each criterion is normalized to a $[0,1]$ range. For **profit** criteria (higher is better):
+Each criterion is normalized to a range between 0 and 1. For **profit** criteria (higher is better):
 
 $$v_{ij} = \frac{x_{ij} - \min(x_i)}{\max(x_i) - \min(x_i)}$$
 
