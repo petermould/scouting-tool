@@ -85,6 +85,7 @@ One thing I found genuinely interesting while working through this: TOPSIS doesn
 
 Let $x_{ij}$ represent the raw value of criterion $i$ for player $j$, where $i = 1, \dots, n$ (the number of criteria) and $j = 1, \dots, m$ (the number of players).
 
+
 **Step 2 — Normalization**
 
 Each criterion is normalized to a range between 0 and 1. For **profit** criteria (higher is better):
@@ -94,6 +95,7 @@ $$v_{ij} = \frac{x_{ij} - \min(x_i)}{\max(x_i) - \min(x_i)}$$
 For **cost** criteria (lower is better, e.g. red cards):
 
 $$v_{ij} = \frac{\max(x_i) - x_{ij}}{\max(x_i) - \min(x_i)}$$
+
 
 **Step 3 — Weighting**
 
@@ -105,15 +107,18 @@ giving the weighted normalized value:
 
 $$u_{ij} = w_i \cdot v_{ij}$$
 
+
 **Step 4 — Ideal and Worst-Case Solutions**
 
 $$u_i^* = \max_j(u_{ij}), \qquad u_i^- = \min_j(u_{ij})$$
+
 
 **Step 5 — Euclidean Distance to Ideal and Worst-Case**
 
 $$D_j^* = \sqrt{\sum_{i=1}^{n} \left(u_{ij} - u_i^*\right)^2}$$
 
 $$D_j^- = \sqrt{\sum_{i=1}^{n} \left(u_{ij} - u_i^-\right)^2}$$
+
 
 **Step 6 — Relative Closeness (Final Rating)**
 
