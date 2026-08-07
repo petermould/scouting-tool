@@ -59,6 +59,8 @@ While researching how to actually turn all these stats into one meaningful numbe
 
 TOPSIS stands for **Technique for Order Preference by Similarity to Ideal Solution**. The idea is genuinely simple once you get past the name: build an imaginary "perfect player" using the best real value of every stat across the whole dataset, and an imaginary "worst-case player" using the worst value of every stat. Then, for every real player, measure how close they are to each of these two — the closer to the ideal and further from the worst-case, the higher the rating.
 
+<img width="749" height="413" alt="Screenshot 2026-08-07 at 01 01 36" src="https://github.com/user-attachments/assets/2f5ce366-8675-42eb-864a-7810f33760ee" />
+
 Here's how it actually works, step by step:
 
 1. Normalize every stat to a 0–1 scale. For stats where higher is better (like goals per 90), the best real value becomes 1 and the worst becomes 0. For stats where lower is better (like red cards), it's flipped — the lowest value becomes 1.
